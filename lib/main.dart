@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'pages/home_page.dart'; // ✅ 분리된 메인화면
 
 void main() {
   runApp(const StayOnApp());
@@ -68,10 +69,9 @@ class SignInPage extends StatelessWidget {
                   const SizedBox(height: 28),
                   _GoogleSignInButton(
                     onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('데모 UI: 로그인 동작은 연결되어 있지 않습니다.'),
-                        ),
+                      // ✅ 로그인 성공 가정 → 메인화면으로 교체
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (_) => const HomePage()),
                       );
                     },
                   ),
@@ -137,6 +137,7 @@ class _GoogleSignInButton extends StatelessWidget {
       height: 52,
       width: double.infinity,
       child: OutlinedButton(
+        key: const ValueKey('loginButton'), // ✅ 테스트용 키
         style: OutlinedButton.styleFrom(
           side: BorderSide(color: cs.outline.withValues(alpha: 0.4)),
           shape: RoundedRectangleBorder(
